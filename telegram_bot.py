@@ -9,6 +9,7 @@ import time
 from dotenv import load_dotenv
 
 filename = 'subscribe.csv'
+job_queue_flag = 0
 
 dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
 load_dotenv(dotenv_path)
@@ -29,7 +30,7 @@ def start(bot, update):
     update.message.reply_text('Hi!')
 
 def help(bot, update):
-    update.message.reply_text('What you can order: \n /add, /remove, /list, /on, /initiate')
+    update.message.reply_text('What you can order: \n /add, /remove, /list, /on, /off, /initiate')
 
 def subscription_list(bot, update):
     """Echo the subscription list."""
@@ -99,10 +100,18 @@ def callback_feedupdater(bot, job):
             bot.send_message(chat_id=job.context, text='CSV File Error!')
 
 def callback_timer(bot, update, job_queue):
-    bot.send_message(chat_id=update.message.chat_id,
-                     text='Notification ON!')
+    if(job_queue_flag==1):
+        job_queue.schedule_removal()
+    elif(job_queue_flag==0):
+        bot.send_message(chat_id=update.message.chat_id,
+                         text='Notification ON!')
+        job_queue.run_repeating(callback_feedupdater, interval=60, context=update.message.chat_id)
+    else:
+        bot.send_message(chat_id=update.message.chat_id, text='FLAG ERROR')
 
-    job_queue.run_repeating(callback_feedupdater, interval=60, context=update.message.chat_id)
+def notify_off(bot, update, job_queue):
+    bot.send_message(chat_id=update.message.chat_id, text='Notification OFF!')
+    job_queue_flag = 1
 
 def main():
     """Start the bot."""
@@ -115,7 +124,7 @@ def main():
     # Cron_updater
     feed_handler = CommandHandler("on", callback_timer, pass_job_queue=True)
     dp.add_handler(feed_handler)
-
+    dp.add_handler(CommandHandler("off", notify_off, pass_job_queue=True))
     # on different commands - answer in Telegram
     dp.add_handler(CommandHandler("hello", start))
     dp.add_handler(CommandHandler("help", help))
