@@ -20,6 +20,9 @@ You can follow someone without showing that you are following someone to your fr
 Add your TOKEN from @Botfather to ``.env`` file like this:
 > TELEGRAM_TOKEN='Your TOKEN from @Botfather'
 
+e.g.
+> TELEGRAM_TOKEN='QWERTYUIOPLKJHGFDSAZXCVBNM09:8765434567Y'
+
 3. ```$python3 telegram_bot.py```
 
 ## Instruction
