@@ -33,7 +33,10 @@ def help(bot, update):
 
 def subscription_list(bot, update):
     """Echo the subscription list."""
-    update.message.reply_text("\n".join(url_request.print_subscribe_list()))
+    if(os.path.exists(filename)==0):
+        update.message.reply_text('Add subscribe list first')
+    else:
+        update.message.reply_text("\n".join(url_request.print_subscribe_list()))
 
 def initiate(bot, update):
     """Flush all subscription list."""
