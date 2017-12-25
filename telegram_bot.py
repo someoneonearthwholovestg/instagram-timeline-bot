@@ -8,6 +8,15 @@ import os, sys
 import time
 from dotenv import load_dotenv
 
+# PreLoad dryscrape Module
+import dryscrape
+import webkit_server
+dryscrape.start_xvfb()
+server = webkit_server.Server()
+server_conn = webkit_server.ServerConnection(server=server)
+driver = dryscrape.driver.webkit.Driver(connection=server_conn)
+sess = dryscrape.Session(driver=driver)
+
 filename = 'subscribe.csv'
 job_queue_flag = 0
 

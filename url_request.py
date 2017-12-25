@@ -11,24 +11,18 @@ def find_latest(insta_url):
   """find latest post address from instagram profile URL"""
   import dryscrape
   from bs4 import BeautifulSoup
-  dryscrape.start_xvfb()
-  server = webkit_server.Server()
-  server_conn = webkit_server.ServerConnection(server=server)
-  driver = dryscrape.driver.webkit.Driver(connection=server_conn)
-  sess = dryscrape.Session(driver=driver)
   sess.set_attribute('auto_load_images', False)
   sess.visit(insta_url)
   response = sess.body()
   sess.reset()
   soup = BeautifulSoup(response, "lxml")
   latest_post = soup.select('div._cmdpi a[href]')
-  #print(latest_post)
   try:
     ying = latest_post[0].get('href')
   except IndexError:
     return 'NULL'
   latest_post_url = "https://instagram.com"+ying
-  server.kill()
+  # server.kill()
   return latest_post_url
 
 def duplicate_check(insta_id):
