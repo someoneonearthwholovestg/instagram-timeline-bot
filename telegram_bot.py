@@ -4,10 +4,15 @@ from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 import logging
 import url_request
 import csv
-import os,sys
+import os, sys
 import time
+from dotenv import load_dotenv
 
 filename = 'subscribe.csv'
+
+dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
+load_dotenv(dotenv_path)
+token = os.getenv('TELEGRAM_TOKEN')
 
 
 # Enable logging
@@ -99,7 +104,7 @@ def callback_timer(bot, update, job_queue):
 def main():
     """Start the bot."""
     # Create the EventHandler and pass it your bot's token.
-    updater = Updater("YOUR_TOKEN_HERE")
+    updater = Updater(token) # YOUR TOKEN HERE
 
     # Get the dispatcher to register handlers
     dp = updater.dispatcher
