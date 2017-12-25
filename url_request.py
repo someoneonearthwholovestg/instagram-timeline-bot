@@ -7,7 +7,7 @@ def profile_address(insta_id):
   insta_url = "https://instagram.com/"+insta_id
   return insta_url
 
-def find_latest(insta_url):
+def find_latest(insta_url, sess):
   """find latest post address from instagram profile URL"""
   import dryscrape
   from bs4 import BeautifulSoup

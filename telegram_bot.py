@@ -93,7 +93,7 @@ def callback_feedupdater(bot, job):
             for row in reader:
                 profile = url_request.profile_address(row[0])
                 # print(profile)
-                url_temp = url_request.find_latest(profile)
+                url_temp = url_request.find_latest(profile,sess)
                 if(row[1]!=url_temp):
                     row[1] = url_temp
                     bot.send_message(chat_id=job.context, text=row[1])
