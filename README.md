@@ -7,7 +7,9 @@ You can follow someone without showing that you are following someone to your fr
 ## Requirements
 * Python 3.x
 * Python-telegram-bot <https://github.com/python-telegram-bot/python-telegram-bot>_
-* bs4
+* BeautifulSoup 4
+* dryscrape
+* dotenv
 
 
 ## Installation
@@ -17,6 +19,8 @@ You can follow someone without showing that you are following someone to your fr
 
 Add your TOKEN from @Botfather to ``.env`` file like this:
 > TELEGRAM_TOKEN='Your TOKEN from @Botfather'
+
+3. ```$python3 telegram_bot.py```
 
 ## Instruction
 *  `/add [Instagram ID]` : Subscribe **`USER`**
