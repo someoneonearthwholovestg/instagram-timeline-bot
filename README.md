@@ -15,9 +15,9 @@ You can follow someone without showing that you are following someone to your fr
 ## Installation
 1. ```git clone https://github.com/tycheyoung/PapagyeInsta-Bot.git```
 
-2. ```$vim .env```
+2. ```$vim .envs```
 
-Add your TOKEN from @Botfather to ``.env`` file like this:
+Add your TOKEN from @Botfather to ``.envs`` file like this:
 > TELEGRAM_TOKEN='Your TOKEN from @Botfather'
 
 e.g.
