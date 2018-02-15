@@ -20,7 +20,7 @@ sess = dryscrape.Session(driver=driver)
 filename = 'subscribe.csv'
 job_queue_flag = 0
 
-dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
+dotenv_path = os.path.join(os.path.dirname(__file__), '.envs')
 load_dotenv(dotenv_path)
 token = os.getenv('TELEGRAM_TOKEN')
 

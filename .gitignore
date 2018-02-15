@@ -1,5 +1,6 @@
 subscribe.csv
 .idea/
+.envs
 .env
 
 # Byte-compiled / optimized / DLL files
