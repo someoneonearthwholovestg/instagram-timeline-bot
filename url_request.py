@@ -44,7 +44,7 @@ def add_subscribe(insta_id):
     if(duplicate_check(insta_id)==-1):
       newFileWriter = csv.writer(newFile)
       try:
-        latest_url = 'NULL'  # should be empty in first addition
+        latest_url = find_latest(profile_address(insta_id))
         newFileWriter.writerow([insta_id, latest_url])
         return -2
       except IndexError:
