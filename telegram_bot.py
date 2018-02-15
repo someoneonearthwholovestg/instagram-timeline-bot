@@ -9,14 +9,6 @@ import time
 from dotenv import load_dotenv
 
 # PreLoad dryscrape Module
-import dryscrape
-import webkit_server
-dryscrape.start_xvfb()
-server = webkit_server.Server()
-server_conn = webkit_server.ServerConnection(server=server)
-driver = dryscrape.driver.webkit.Driver(connection=server_conn)
-sess = dryscrape.Session(driver=driver)
-
 filename = 'subscribe.csv'
 job_queue_flag = 0
 
@@ -93,7 +85,7 @@ def callback_feedupdater(bot, job):
             for row in reader:
                 profile = url_request.profile_address(row[0])
                 # print(profile)
-                url_temp = url_request.find_latest(profile,sess)
+                url_temp = url_request.find_latest(profile)
                 if(row[1]!=url_temp):
                     row[1] = url_temp
                     bot.send_message(chat_id=job.context, text=row[1])

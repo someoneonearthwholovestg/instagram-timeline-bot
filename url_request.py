@@ -1,5 +1,10 @@
 import csv, os
-import webkit_server
+import requests
+from bs4 import BeautifulSoup
+import json
+import re
+import sys
+
 filename = 'subscribe.csv'
 
 def profile_address(insta_id):
@@ -7,26 +12,23 @@ def profile_address(insta_id):
   insta_url = "https://instagram.com/"+insta_id
   return insta_url
 
-def find_latest(insta_url, sess):
+def find_latest(insta_url):
   """find latest post address from instagram profile URL"""
-  import dryscrape
-  from bs4 import BeautifulSoup
-  sess.set_attribute('auto_load_images', False)
-  sess.visit(insta_url)
-  response = sess.body()
-  sess.reset()
-  soup = BeautifulSoup(response, "lxml")
-  latest_post = soup.select('div._cmdpi a[href]')
   try:
-    ying = latest_post[0].get('href')
-  except IndexError:
+    req = requests.get(insta_url)
+    # HTML 소스 가져오기
+    html = req.text
+    soup = BeautifulSoup(html, 'lxml')
+    script_tag = soup.find('script', text=re.compile('window\._sharedData'))
+    shared_data = script_tag.string.partition('=')[-1].strip(' ;')
+    result = json.loads(shared_data)
+    latest_code = result['entry_data']['ProfilePage'][0]['user']['media']['nodes'][0]['code']
+  except KeyError:
     return 'NULL'
-  latest_post_url = "https://instagram.com"+ying
-  # server.kill()
-  return latest_post_url
+  latest_url = "https://instagram.com/p/"+latest_code
+  return latest_url
 
 def duplicate_check(insta_id):
-  import sys
   with open(filename, newline='') as f:
       reader = csv.reader(f)
       try:
