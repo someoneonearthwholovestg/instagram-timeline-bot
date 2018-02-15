@@ -16,9 +16,9 @@ def find_latest(insta_url):
   """find latest post address from instagram profile URL"""
   try:
     req = requests.get(insta_url)
-    # HTML 소스 가져오기
     html = req.text
     soup = BeautifulSoup(html, 'lxml')
+    time.sleep(0.5)
     script_tag = soup.find('script', text=re.compile('window\._sharedData'))
     shared_data = script_tag.string.partition('=')[-1].strip(' ;')
     result = json.loads(shared_data)
