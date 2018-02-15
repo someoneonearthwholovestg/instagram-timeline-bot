@@ -8,9 +8,8 @@ You can follow someone without showing that you are following someone to your fr
 * Python 3.x
 * Python-telegram-bot <https://github.com/python-telegram-bot/python-telegram-bot>_
 * BeautifulSoup 4
-* dryscrape
 * dotenv
-
+* requests
 
 ## Installation
 1. ```git clone https://github.com/tycheyoung/PapagyeInsta-Bot.git```
