@@ -3,6 +3,7 @@ outfile.csv
 .idea/
 .envs
 .env
+.vscode/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
