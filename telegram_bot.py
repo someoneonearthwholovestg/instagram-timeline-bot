@@ -89,10 +89,10 @@ def callback_feedupdater(bot, job):
                 if(row[1]!=url_temp):
                     row[1] = url_temp
                     bot.send_message(chat_id=job.context, text=row[1])
-                    try:
-                        writer.writerow(row)
-                    except IndexError:
-                        bot.send_message(chat_id=job.context, text=row[0]+'changed to private account or not existing')
+                try:
+                    writer.writerow(row)
+                except IndexError:
+                    bot.send_message(chat_id=job.context, text=row[0]+'changed to private account or not existing')
 #                time.sleep(20)
             os.remove(filename)
             os.rename("outfile.csv", filename)
