@@ -18,11 +18,10 @@ def find_latest(insta_url):
     req = requests.get(insta_url)
     html = req.text
     soup = BeautifulSoup(html, 'lxml')
-    time.sleep(0.5)
     script_tag = soup.find('script', text=re.compile('window\._sharedData'))
     shared_data = script_tag.string.partition('=')[-1].strip(' ;')
     result = json.loads(shared_data)
-    latest_code = result['entry_data']['ProfilePage'][0]['user']['media']['nodes'][0]['code']
+    latest_code = result['entry_data']['ProfilePage'][0]['graphql']['user']['edge_owner_to_timeline_media']['edges'][0]['node']['shortcode']
   except KeyError:
     return 'NULL'
   latest_url = "https://instagram.com/p/"+latest_code
