@@ -1,0 +1,4 @@
+requests==2.19.1
+beautifulsoup4==4.6.3
+python-dotenv==0.10.1
+telegram==0.0.1
