@@ -106,6 +106,32 @@ def unsubscribe_tag(bot, update, args):
     except (IndexError, ValueError):
         update.message.reply_text('Usage: /remove <Instagram ID>')
 
+def show_latest_user(bot, update, args):
+    """Show latest update."""
+    chat_id = update.message.chat_id
+    try:
+        results = url_request.find_latest(url_request.profile_address(args[0]), 0)
+        if (results == 'NULL'):
+          update.message.reply_text("Page doesn't exist or private account")
+        else:
+          update.message.reply_text(results)
+
+    except (IndexError, ValueError):
+        update.message.reply_text('Usage: /show_latest_user <Instagram ID or TAG>')
+        
+def show_latest_tag(bot, update, args):
+    """Show latest update."""
+    chat_id = update.message.chat_id
+    try:
+        results = url_request.find_latest(url_request.profile_address(args[0]), 1)
+        if (results == 'NULL'):
+          update.message.reply_text("Result does not exist")
+        else:
+          update.message.reply_text(results)
+
+    except (IndexError, ValueError):
+        update.message.reply_text('Usage: /show_latest_tag <Instagram ID or TAG>')
+
 def error(bot, update, error):
     """Log Errors caused by Updates."""
     logger.warning('Update "%s" caused error "%s"', update, error)
@@ -191,6 +217,8 @@ def main():
     dp.add_handler(CommandHandler("remove_user", unsubscribe_user, pass_args=True))
     dp.add_handler(CommandHandler("add_tag", add_subscription_tag, pass_args=True))
     dp.add_handler(CommandHandler("remove_tag", unsubscribe_tag, pass_args=True))
+    dp.add_handler(CommandHandler("show_latest_user", show_latest_user, pass_args=True))
+    dp.add_handler(CommandHandler("show_latest_tag", show_latest_tag, pass_args=True))
 
     # on noncommand i.e message - echo the message on Telegram
     # dp.add_handler(MessageHandler(Filters.text, echo))
