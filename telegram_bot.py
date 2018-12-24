@@ -66,7 +66,7 @@ def add_subscription_user(bot, update, args):
         update.message.reply_text('Usage: /add <Instagram ID>')
 
 def unsubscribe_user(bot, update, args):
-    """Add Instagram ID to subscription list."""
+    """Remove Instagram ID to subscription list."""
     chat_id = update.message.chat_id
     try:
         results = url_request.unsubscribe(args[0], filename)
@@ -91,10 +91,10 @@ def add_subscription_tag(bot, update, args):
           update.message.reply_text("Page doesn't exist")
           
     except (IndexError, ValueError):
-        update.message.reply_text('Usage: /add <Instagram ID>')
+        update.message.reply_text('Usage: /add <TAG>')
 
 def unsubscribe_tag(bot, update, args):
-    """Add Instagram TAG to subscription list."""
+    """Remove Instagram TAG to subscription list."""
     chat_id = update.message.chat_id
     try:
         results = url_request.unsubscribe(args[0], filename_2)
@@ -104,10 +104,10 @@ def unsubscribe_tag(bot, update, args):
           update.message.reply_text('Successfully removed from subscription list!')
 
     except (IndexError, ValueError):
-        update.message.reply_text('Usage: /remove <Instagram ID>')
+        update.message.reply_text('Usage: /remove <TAG>')
 
 def show_latest_user(bot, update, args):
-    """Show latest update."""
+    """Show latest update of USER."""
     chat_id = update.message.chat_id
     try:
         results = url_request.find_latest(url_request.profile_address(args[0]), 0)
@@ -120,7 +120,7 @@ def show_latest_user(bot, update, args):
         update.message.reply_text('Usage: /show_latest_user <Instagram ID or TAG>')
         
 def show_latest_tag(bot, update, args):
-    """Show latest update."""
+    """Show latest update of TAG."""
     chat_id = update.message.chat_id
     try:
         results = url_request.find_latest(url_request.profile_address(args[0]), 1)
