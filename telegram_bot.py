@@ -10,6 +10,7 @@ from dotenv import load_dotenv
 
 # PreLoad dryscrape Module
 filename = 'subscribe_user.csv'
+filename_2 = 'subscribe_tag.csv'
 job_queue_flag = 0
 
 dotenv_path = os.path.join(os.path.dirname(__file__), '.envs')
@@ -31,25 +32,29 @@ def start(bot, update):
     update.message.reply_text('Hi!')
 
 def help(bot, update):
-    update.message.reply_text('What you can order: \n /add, /remove, /list, /on, /off, /initiate')
+    update.message.reply_text('What you can order: \n /add_user, /remove_user, /add_tag, /remove_tag, /list, /on, /off, /initiate')
 
 def subscription_list(bot, update):
     """Echo the subscription list."""
     if(os.path.exists(filename)==0):
         update.message.reply_text('Add subscribe list first')
     else:
-        update.message.reply_text("\n".join(url_request.print_subscribe_list()))
+        update.message.reply_text('User:')
+        update.message.reply_text("\n".join(url_request.print_subscribe_list(filename)))
+        update.message.reply_text('Tag:')
+        update.message.reply_text("\n".join(url_request.print_subscribe_list(filename_2)))
 
 def initiate(bot, update):
     """Flush all subscription list."""
-    url_request.initiate_list()
+    url_request.initiate_list(filename)
+    url_request.initiate_list(filename_2)
     update.message.reply_text('Terminated all subscription list!')
 
 def add_subscription_user(bot, update, args):
     """Add Instagram ID to subscription list."""
     chat_id = update.message.chat_id
     try:
-        results = url_request.add_subscribe(args[0])
+        results = url_request.add_subscribe(args[0], filename, 0)
         if (results == -2):
           update.message.reply_text('Successfully added to subscription list!')
         elif (results == -3):
@@ -64,7 +69,35 @@ def unsubscribe_user(bot, update, args):
     """Add Instagram ID to subscription list."""
     chat_id = update.message.chat_id
     try:
-        results = url_request.unsubscribe(args[0])
+        results = url_request.unsubscribe(args[0], filename)
+        if (results == -3):
+          update.message.reply_text('There is nothing to unsubscribe')
+        elif (results == -2):
+          update.message.reply_text('Successfully removed from subscription list!')
+
+    except (IndexError, ValueError):
+        update.message.reply_text('Usage: /remove <Instagram ID>')
+
+def add_subscription_tag(bot, update, args):
+    """Add Instagram TAG to subscription list."""
+    chat_id = update.message.chat_id
+    try:
+        results = url_request.add_subscribe(args[0], filename_2, 1)
+        if (results == -2):
+          update.message.reply_text('Successfully added to subscription list!')
+        elif (results == -3):
+          update.message.reply_text('Already exists in subscription list!')
+        elif (results == -4):
+          update.message.reply_text("Page doesn't exist")
+          
+    except (IndexError, ValueError):
+        update.message.reply_text('Usage: /add <Instagram ID>')
+
+def unsubscribe_tag(bot, update, args):
+    """Add Instagram TAG to subscription list."""
+    chat_id = update.message.chat_id
+    try:
+        results = url_request.unsubscribe(args[0], filename_2)
         if (results == -3):
           update.message.reply_text('There is nothing to unsubscribe')
         elif (results == -2):
@@ -133,6 +166,8 @@ def main():
     dp.add_handler(CommandHandler("list", subscription_list))
     dp.add_handler(CommandHandler("add_user", add_subscription_user, pass_args=True))
     dp.add_handler(CommandHandler("remove_user", unsubscribe_user, pass_args=True))
+    dp.add_handler(CommandHandler("add_tag", add_subscription_tag, pass_args=True))
+    dp.add_handler(CommandHandler("remove_tag", unsubscribe_tag, pass_args=True))
 
     # on noncommand i.e message - echo the message on Telegram
     # dp.add_handler(MessageHandler(Filters.text, echo))

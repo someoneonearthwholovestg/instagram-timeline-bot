@@ -5,8 +5,6 @@ import json
 import re
 import sys
 
-filename = 'subscribe_user.csv'
-
 def profile_address(insta_id):
   """returns instagram profile address"""
   insta_url = "https://instagram.com/"+insta_id
@@ -30,7 +28,7 @@ def find_latest(insta_url, tag):
   latest_url = "https://instagram.com/p/"+latest_code
   return latest_url
 
-def duplicate_check(insta_id):
+def duplicate_check(insta_id, filename):
   with open(filename, newline='') as f:
       reader = csv.reader(f)
       try:
@@ -41,12 +39,12 @@ def duplicate_check(insta_id):
       except csv.Error as e:
           sys.exit('file {}, line {}: {}'.format(filename, reader.line_num, e))
 
-def add_subscribe(insta_id):
+def add_subscribe(insta_id, filename, tag):
   with open(filename, 'a') as newFile:
-    if(duplicate_check(insta_id)==-1):
+    if(duplicate_check(insta_id, filename)==-1):
       newFileWriter = csv.writer(newFile)
       try:
-        latest_url = find_latest(profile_address(insta_id), 0)
+        latest_url = find_latest(profile_address(insta_id), tag)
         newFileWriter.writerow([insta_id, latest_url])
         return -2
       except IndexError:
@@ -56,8 +54,8 @@ def add_subscribe(insta_id):
       # print("duplicated subscription request")
       return -3
 
-def unsubscribe(insta_id):
-  row_num = duplicate_check(insta_id)
+def unsubscribe(insta_id, filename):
+  row_num = duplicate_check(insta_id, filename)
   ROWS_TO_DELETE = {row_num}
   if(row_num == -1):
     # print("there is nothing to unsubscribe")
@@ -70,7 +68,7 @@ def unsubscribe(insta_id):
     os.rename("outfile.csv", filename)
     return -2
 
-def print_subscribe_list():
+def print_subscribe_list(filename):
   ans = []
   with open(filename, newline='') as f:
       reader = csv.reader(f)
@@ -81,7 +79,7 @@ def print_subscribe_list():
       except csv.Error as e:
           sys.exit('file {}, line {}: {}'.format(filename, reader.line_num, e))
 
-def initiate_list():
+def initiate_list(filename):
   """remove csv file"""
   os.remove(filename)
 
