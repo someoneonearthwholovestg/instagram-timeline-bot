@@ -176,10 +176,10 @@ def callback_feedupdater(bot, job):
                 except IndexError:
                     bot.send_message(chat_id=job.context, text=row[0]+'does not exist')
 #                time.sleep(20)
-            os.remove(filename)
-            os.rename("outfile_2.csv", filename)
+            os.remove(filename_2)
+            os.rename("outfile_2.csv", filename_2)
         except csv.Error as e:
-            sys.exit('file {}, line {}: {}'.format(filename, reader.line_num, e))
+            sys.exit('file {}, line {}: {}'.format(filename_2, reader.line_num, e))
             bot.send_message(chat_id=job.context, text='CSV File Error!')
 
 def callback_timer(bot, update, job_queue):
