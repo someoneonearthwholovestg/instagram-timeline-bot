@@ -1,5 +1,4 @@
-subscribe.csv
-outfile.csv
+*.csv
 .idea/
 .envs
 .env
