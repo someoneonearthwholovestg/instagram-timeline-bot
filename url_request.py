@@ -89,7 +89,8 @@ def print_subscribe_list(filename):
 
 def initiate_list(filename):
   """remove csv file"""
-  os.remove(filename)
+  if os.path.exists(filename):
+    os.remove(filename)
 
 # if __name__ == "__main__":
 #   import argparse
