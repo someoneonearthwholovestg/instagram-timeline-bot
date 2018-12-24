@@ -36,7 +36,7 @@ def help(bot, update):
 
 def subscription_list(bot, update):
     """Echo the subscription list."""
-    if(os.path.exists(filename)==0):
+    if(os.path.exists(filename)==0 && os.path.exists(filename_2)==0):
         update.message.reply_text('Add subscribe list first')
     else:
         update.message.reply_text('User:')
