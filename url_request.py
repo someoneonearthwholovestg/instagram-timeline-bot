@@ -5,14 +5,14 @@ import json
 import re
 import sys
 
-filename = 'subscribe.csv'
+filename = 'subscribe_user.csv'
 
 def profile_address(insta_id):
   """returns instagram profile address"""
   insta_url = "https://instagram.com/"+insta_id
   return insta_url
 
-def find_latest(insta_url):
+def find_latest(insta_url, tag):
   """find latest post address from instagram profile URL"""
   try:
     req = requests.get(insta_url)
@@ -21,7 +21,10 @@ def find_latest(insta_url):
     script_tag = soup.find('script', text=re.compile('window\._sharedData'))
     shared_data = script_tag.string.partition('=')[-1].strip(' ;')
     result = json.loads(shared_data)
-    latest_code = result['entry_data']['ProfilePage'][0]['graphql']['user']['edge_owner_to_timeline_media']['edges'][0]['node']['shortcode']
+    if tag == 0:
+      latest_code = result['entry_data']['ProfilePage'][0]['graphql']['user']['edge_owner_to_timeline_media']['edges'][0]['node']['shortcode']
+    else:
+      latest_code = result['entry_data']['TagPage'][0]['graphql']['hashtag']['edge_hashtag_to_media']['edges'][0]['node']['shortcode']
   except KeyError:
     return 'NULL'
   latest_url = "https://instagram.com/p/"+latest_code
@@ -43,7 +46,7 @@ def add_subscribe(insta_id):
     if(duplicate_check(insta_id)==-1):
       newFileWriter = csv.writer(newFile)
       try:
-        latest_url = find_latest(profile_address(insta_id))
+        latest_url = find_latest(profile_address(insta_id), 0)
         newFileWriter.writerow([insta_id, latest_url])
         return -2
       except IndexError:

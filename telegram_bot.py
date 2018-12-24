@@ -9,7 +9,7 @@ import time
 from dotenv import load_dotenv
 
 # PreLoad dryscrape Module
-filename = 'subscribe.csv'
+filename = 'subscribe_user.csv'
 job_queue_flag = 0
 
 dotenv_path = os.path.join(os.path.dirname(__file__), '.envs')
@@ -45,7 +45,7 @@ def initiate(bot, update):
     url_request.initiate_list()
     update.message.reply_text('Terminated all subscription list!')
 
-def add_subscription(bot, update, args):
+def add_subscription_user(bot, update, args):
     """Add Instagram ID to subscription list."""
     chat_id = update.message.chat_id
     try:
@@ -60,7 +60,7 @@ def add_subscription(bot, update, args):
     except (IndexError, ValueError):
         update.message.reply_text('Usage: /add <Instagram ID>')
 
-def unsubscribe(bot, update, args):
+def unsubscribe_user(bot, update, args):
     """Add Instagram ID to subscription list."""
     chat_id = update.message.chat_id
     try:
@@ -85,7 +85,7 @@ def callback_feedupdater(bot, job):
             for row in reader:
                 profile = url_request.profile_address(row[0])
                 # print(profile)
-                url_temp = url_request.find_latest(profile)
+                url_temp = url_request.find_latest(profile, 0)
                 if(row[1]!=url_temp):
                     row[1] = url_temp
                     bot.send_message(chat_id=job.context, text=row[1])
@@ -131,8 +131,8 @@ def main():
     dp.add_handler(CommandHandler("help", help))
     dp.add_handler(CommandHandler("initiate", initiate))
     dp.add_handler(CommandHandler("list", subscription_list))
-    dp.add_handler(CommandHandler("add", add_subscription, pass_args=True))
-    dp.add_handler(CommandHandler("remove", unsubscribe, pass_args=True))
+    dp.add_handler(CommandHandler("add_user", add_subscription_user, pass_args=True))
+    dp.add_handler(CommandHandler("remove_user", unsubscribe_user, pass_args=True))
 
     # on noncommand i.e message - echo the message on Telegram
     # dp.add_handler(MessageHandler(Filters.text, echo))
