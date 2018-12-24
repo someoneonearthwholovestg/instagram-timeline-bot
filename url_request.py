@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 import csv, os
 import requests
 from bs4 import BeautifulSoup
@@ -34,7 +36,7 @@ def find_latest(insta_url, tag):
   return latest_url
 
 def duplicate_check(insta_id, filename):
-  with open(filename, newline='') as f:
+  with open(filename, newline='', encoding='utf-8') as f:
       reader = csv.reader(f)
       try:
           for idx,row in enumerate(reader):
@@ -45,7 +47,7 @@ def duplicate_check(insta_id, filename):
           sys.exit('file {}, line {}: {}'.format(filename, reader.line_num, e))
 
 def add_subscribe(insta_id, filename, tag):
-  with open(filename, 'a') as newFile:
+  with open(filename, 'a', encoding='utf-8') as newFile:
     if(duplicate_check(insta_id, filename)==-1):
       newFileWriter = csv.writer(newFile)
       try:
@@ -69,7 +71,7 @@ def unsubscribe(insta_id, filename):
     # print("there is nothing to unsubscribe")
     return -3
   else:
-    with open(filename, 'rt') as infile, open('outfile.csv', 'wt') as outfile:
+    with open(filename, 'rt', encoding='utf-8') as infile, open('outfile.csv', 'wt', encoding='utf-8') as outfile:
       outfile.writelines(row for row_num, row in enumerate(infile, 0)
                           if row_num not in ROWS_TO_DELETE)
     os.remove(filename)
@@ -78,7 +80,7 @@ def unsubscribe(insta_id, filename):
 
 def print_subscribe_list(filename):
   ans = []
-  with open(filename, newline='') as f:
+  with open(filename, newline='', encoding='utf-8') as f:
       reader = csv.reader(f)
       try:
           for row in reader:

@@ -138,7 +138,7 @@ def error(bot, update, error):
 
 def callback_feedupdater(bot, job):
     # USER UPDATE
-    with open(filename, 'rt') as infile, open('outfile.csv', 'a') as outfile:
+    with open(filename, 'rt', encoding='utf-8') as infile, open('outfile.csv', 'a', encoding='utf-8') as outfile:
         reader = csv.reader(infile)
         writer = csv.writer(outfile)
         try:
@@ -160,7 +160,7 @@ def callback_feedupdater(bot, job):
             sys.exit('file {}, line {}: {}'.format(filename, reader.line_num, e))
             bot.send_message(chat_id=job.context, text='CSV File Error!')
     # TAG UPDATE
-    with open(filename_2, 'rt') as infile, open('outfile_2.csv', 'a') as outfile:
+    with open(filename_2, 'rt', encoding='utf-8') as infile, open('outfile_2.csv', 'a', encoding='utf-8') as outfile:
         reader = csv.reader(infile)
         writer = csv.writer(outfile)
         try:
