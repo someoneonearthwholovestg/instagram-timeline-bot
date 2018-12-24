@@ -39,10 +39,10 @@ def subscription_list(bot, update):
     if(os.path.exists(filename)==0 and os.path.exists(filename_2)==0):
         update.message.reply_text('Add subscribe list first')
     else:
-        update.message.reply_text('User:')
-        update.message.reply_text("\n".join(url_request.print_subscribe_list(filename)))
-        update.message.reply_text('Tag:')
-        update.message.reply_text("\n".join(url_request.print_subscribe_list(filename_2)))
+        if(os.path.exists(filename)!=0):
+            update.message.reply_text('User:\n'+"\n".join(url_request.print_subscribe_list(filename)))
+        if(os.path.exists(filename_2)!=0):
+            update.message.reply_text('Tag:\n'+"\n".join(url_request.print_subscribe_list(filename_2)))
 
 def initiate(bot, update):
     """Flush all subscription list."""
@@ -63,7 +63,7 @@ def add_subscription_user(bot, update, args):
           update.message.reply_text("Page doesn't exist or private account")
           
     except (IndexError, ValueError):
-        update.message.reply_text('Usage: /add <Instagram ID>')
+        update.message.reply_text('Usage: /add_user <Instagram ID>')
 
 def unsubscribe_user(bot, update, args):
     """Remove Instagram ID to subscription list."""
@@ -76,7 +76,7 @@ def unsubscribe_user(bot, update, args):
           update.message.reply_text('Successfully removed from subscription list!')
 
     except (IndexError, ValueError):
-        update.message.reply_text('Usage: /remove <Instagram ID>')
+        update.message.reply_text('Usage: /remove_user <Instagram ID>')
 
 def add_subscription_tag(bot, update, args):
     """Add Instagram TAG to subscription list."""
@@ -91,7 +91,7 @@ def add_subscription_tag(bot, update, args):
           update.message.reply_text("Page doesn't exist")
           
     except (IndexError, ValueError):
-        update.message.reply_text('Usage: /add <TAG>')
+        update.message.reply_text('Usage: /add_tag <TAG>')
 
 def unsubscribe_tag(bot, update, args):
     """Remove Instagram TAG to subscription list."""
@@ -104,7 +104,7 @@ def unsubscribe_tag(bot, update, args):
           update.message.reply_text('Successfully removed from subscription list!')
 
     except (IndexError, ValueError):
-        update.message.reply_text('Usage: /remove <TAG>')
+        update.message.reply_text('Usage: /remove_tag <TAG>')
 
 def show_latest_user(bot, update, args):
     """Show latest update of USER."""
@@ -117,20 +117,20 @@ def show_latest_user(bot, update, args):
           update.message.reply_text(results)
 
     except (IndexError, ValueError):
-        update.message.reply_text('Usage: /show_latest_user <Instagram ID or TAG>')
+        update.message.reply_text('Usage: /show_latest_user <Instagram ID>')
         
 def show_latest_tag(bot, update, args):
     """Show latest update of TAG."""
     chat_id = update.message.chat_id
     try:
-        results = url_request.find_latest(url_request.profile_address(args[0]), 1)
+        results = url_request.find_latest(url_request.tag_address(args[0]), 1)
         if (results == 'NULL'):
           update.message.reply_text("Result does not exist")
         else:
           update.message.reply_text(results)
 
     except (IndexError, ValueError):
-        update.message.reply_text('Usage: /show_latest_tag <Instagram ID or TAG>')
+        update.message.reply_text('Usage: /show_latest_tag <TAG>')
 
 def error(bot, update, error):
     """Log Errors caused by Updates."""
@@ -165,7 +165,7 @@ def callback_feedupdater(bot, job):
         writer = csv.writer(outfile)
         try:
             for row in reader:
-                profile = url_request.profile_address(row[0])
+                profile = url_request.tag_address(row[0])
                 # print(profile)
                 url_temp = url_request.find_latest(profile, 1)
                 if(row[1]!=url_temp):

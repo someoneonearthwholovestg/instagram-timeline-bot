@@ -10,6 +10,11 @@ def profile_address(insta_id):
   insta_url = "https://instagram.com/"+insta_id
   return insta_url
 
+def tag_address(insta_id):
+  """returns instagram tag address"""
+  insta_url = "https://instagram.com/explore/tags/"+insta_id
+  return insta_url
+
 def find_latest(insta_url, tag):
   """find latest post address from instagram profile URL"""
   try:
