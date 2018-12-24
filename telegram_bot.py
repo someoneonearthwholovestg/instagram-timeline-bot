@@ -32,7 +32,7 @@ def start(bot, update):
     update.message.reply_text('Hi!')
 
 def help(bot, update):
-    update.message.reply_text('What you can order: \n /add_user, /remove_user, /add_tag, /remove_tag, /list, /on, /off, /initiate')
+    update.message.reply_text('What you can order: \n /add_user, /remove_user, /add_tag, /remove_tag, /show_latest_user, /show_latest_tag, /list, /on, /off, /initiate')
 
 def subscription_list(bot, update):
     """Echo the subscription list."""
