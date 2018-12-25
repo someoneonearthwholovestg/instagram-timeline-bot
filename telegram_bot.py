@@ -4,8 +4,10 @@ from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 import logging
 import url_request
 import csv
-import os, sys
+import os
+import sys
 import time
+from threading import Thread
 from dotenv import load_dotenv
 from functools import wraps
 
