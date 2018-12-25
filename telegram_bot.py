@@ -47,7 +47,7 @@ def start(bot, update):
     update.message.reply_text('Hi!')
 
 def help(bot, update):
-    update.message.reply_text('What you can order: \n /add_user, /remove_user, /add_tag, /remove_tag, /show_latest_user, /show_latest_tag, /list, /on, /off, /initiate')
+    update.message.reply_text('What you can order: \n /restart, /add_user, /remove_user, /add_tag, /remove_tag, /show_latest_user, /show_latest_tag, /list, /on, /off, /initiate')
 
 @restricted
 def subscription_list(bot, update):
@@ -65,6 +65,8 @@ def initiate(bot, update):
     """Flush all subscription list."""
     url_request.initiate_list(filename)
     url_request.initiate_list(filename_2)
+    url_request.initiate_list("outfile.csv")
+    url_request.initiate_list("outfile_2.csv")
     update.message.reply_text('Terminated all subscription list!')
 
 @restricted
@@ -242,7 +244,17 @@ def main():
     dp.add_handler(CommandHandler("show_latest_tag", show_latest_tag, pass_args=True))
 
     # on noncommand i.e message - echo the message on Telegram
-    # dp.add_handler(MessageHandler(Filters.text, echo))
+    def stop_and_restart():
+        """Gracefully stop the Updater and replace the current process with a new one"""
+        updater.stop()
+        os.execl(sys.executable, sys.executable, *sys.argv)
+
+    @restricted
+    def restart(bot, update):
+        update.message.reply_text('Bot is restarting...')
+        Thread(target=stop_and_restart).start()
+
+    dp.add_handler(CommandHandler('r', restart))
 
     # log all errors
     dp.add_error_handler(error)
