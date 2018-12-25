@@ -16,11 +16,21 @@ You can follow instagram user/tag using Telegram!
 ```git clone https://github.com/tycheyoung/PapagyeInsta-Bot.git```
 2. Install prerequisites with:
 ```pip install -r requirements.txt```
-3. Add your TOKEN(from [@Botfather](http://t.me/botfather)) to ``.envs`` file like this:
-> TELEGRAM_TOKEN='Your TOKEN from @Botfather'
+3. Add your TOKEN(from [@Botfather](http://t.me/botfather)) and Admin ID(to make it private) to ``.envs`` file like this:
+```
+TELEGRAM_TOKEN='Your TOKEN from @Botfather'
+GROUP_ID_1='1st Admin ID'
+GROUP_ID_2='2nd Admin ID'
+```
 
 e.g.
-> TELEGRAM_TOKEN='QWERTYUIOPLKJHGFDSAZXCVBNM09:8765434567Y'
+```
+TELEGRAM_TOKEN='QWERTYUIOPLKJHGFDSAZXCVBNM09:8765434567Y'
+GROUP_ID_1='123456789'
+GROUP_ID_2='123456789'
+```
+
+You can delete/add admin -> both ``.envs`` and ``telegram_bot.py``.
 
 4. Run Telegram bot:
 ```python3 telegram_bot.py```
