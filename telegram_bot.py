@@ -149,7 +149,7 @@ def callback_feedupdater(bot, job):
                 url_temp = url_request.find_latest(profile, 0)
                 if(row[1]!=url_temp):
                     row[1] = url_temp
-                    bot.send_message(chat_id=job.context, text=row[1])
+                    bot.send_message(chat_id=job.context, text='Update from'+row[0]+':\n'+row[1])
                 try:
                     writer.writerow(row)
                 except IndexError:
@@ -170,7 +170,7 @@ def callback_feedupdater(bot, job):
                 url_temp = url_request.find_latest(profile, 1)
                 if(row[1]!=url_temp):
                     row[1] = url_temp
-                    bot.send_message(chat_id=job.context, text=row[1])
+                    bot.send_message(chat_id=job.context, text='Update from'+row[0]+':\n'+row[1])
                 try:
                     writer.writerow(row)
                 except IndexError:
