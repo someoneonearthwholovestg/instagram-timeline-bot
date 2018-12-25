@@ -153,7 +153,7 @@ def callback_feedupdater(bot, job):
                     writer.writerow(row)
                 except IndexError:
                     bot.send_message(chat_id=job.context, text=row[0]+'changed to private account or not existing')
-#                time.sleep(20)
+                time.sleep(20)
             os.remove(filename)
             os.rename("outfile.csv", filename)
         except csv.Error as e:
@@ -166,7 +166,6 @@ def callback_feedupdater(bot, job):
         try:
             for row in reader:
                 profile = url_request.tag_address(row[0])
-                # print(profile)
                 url_temp = url_request.find_latest(profile, 1)
                 if(row[1]!=url_temp):
                     row[1] = url_temp
@@ -175,7 +174,7 @@ def callback_feedupdater(bot, job):
                     writer.writerow(row)
                 except IndexError:
                     bot.send_message(chat_id=job.context, text=row[0]+'does not exist')
-#                time.sleep(20)
+                time.sleep(20)
             os.remove(filename_2)
             os.rename("outfile_2.csv", filename_2)
         except csv.Error as e:
@@ -188,7 +187,7 @@ def callback_timer(bot, update, job_queue):
     elif(job_queue_flag==0):
         bot.send_message(chat_id=update.message.chat_id,
                          text='Notification ON!')
-        job_queue.run_repeating(callback_feedupdater, interval=60, context=update.message.chat_id)
+        job_queue.run_repeating(callback_feedupdater, interval=1800, context=update.message.chat_id)
     else:
         bot.send_message(chat_id=update.message.chat_id, text='FLAG ERROR')
 
