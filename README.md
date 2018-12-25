@@ -47,7 +47,7 @@ You can delete/add admin -> both ``.envs`` and ``telegram_bot.py``.
 *  `/on` : Turn push notification **ON**
 *  `/off` : Turn push notification **OFF**
 *  `/help` : Show help
-*  `/restart` : Restart bot
+*  `/r` : Restart bot
 
 ## TODO
 * Multi-user support
