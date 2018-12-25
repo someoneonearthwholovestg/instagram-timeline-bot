@@ -32,10 +32,7 @@ def restricted(func):
     @wraps(func)
     def wrapped(bot, update, *args, **kwargs):
         user_id = update.effective_user.id
-        print(LIST_OF_ADMINS)
         if user_id not in LIST_OF_ADMINS:
-            print(type(user_id))
-            print(type(LIST_OF_ADMINS[0]))
             print("Unauthorized access denied for {}.".format(user_id))
             return
         return func(bot, update, *args, **kwargs)
