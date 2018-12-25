@@ -29,7 +29,7 @@ def find_latest(insta_url, tag):
     else:
       latest_code = result['entry_data']['TagPage'][0]['graphql']['hashtag']['edge_hashtag_to_media']['edges'][0]['node']['shortcode']
   except KeyError:
-    return 'NULL'
+    return NULL
   latest_url = "https://instagram.com/p/"+latest_code
   return latest_url
 
