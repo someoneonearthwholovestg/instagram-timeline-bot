@@ -1,7 +1,7 @@
 # PapagyeInsta-Bot
-Private Instagram Following Telegram Bot
+Instagram Following Telegram Bot
 
-You can follow someone without showing that you are following someone to your friends!
+You can follow instagram user/tag using Telegram!
 ****
 
 ## Requirements
@@ -22,7 +22,7 @@ You can follow someone without showing that you are following someone to your fr
 e.g.
 > TELEGRAM_TOKEN='QWERTYUIOPLKJHGFDSAZXCVBNM09:8765434567Y'
 
-4. Run Telegram bot
+4. Run Telegram bot:
 ```python3 telegram_bot.py```
 
 ## Instruction
