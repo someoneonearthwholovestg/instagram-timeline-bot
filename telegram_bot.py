@@ -133,7 +133,7 @@ def show_latest_user(bot, update, args):
     chat_id = update.message.chat_id
     try:
         results = url_request.find_latest(url_request.profile_address(args[0]), 0)
-        if (results == NULL):
+        if (results == 'NULL'):
           update.message.reply_text("Page doesn't exist or private account")
         else:
           update.message.reply_text(results)
@@ -146,7 +146,7 @@ def show_latest_tag(bot, update, args):
     chat_id = update.message.chat_id
     try:
         results = url_request.find_latest(url_request.tag_address(args[0]), 1)
-        if (results == NULL):
+        if (results == 'NULL'):
           update.message.reply_text("Result does not exist")
         else:
           update.message.reply_text(results)

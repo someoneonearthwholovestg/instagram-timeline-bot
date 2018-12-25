@@ -6,6 +6,7 @@ from bs4 import BeautifulSoup
 import json
 import re
 import sys
+from json import JSONDecodeError
 
 def profile_address(insta_id):
   """returns instagram profile address"""
@@ -28,8 +29,8 @@ def find_latest(insta_url, tag):
       latest_code = result['entry_data']['ProfilePage'][0]['graphql']['user']['edge_owner_to_timeline_media']['edges'][0]['node']['shortcode']
     else:
       latest_code = result['entry_data']['TagPage'][0]['graphql']['hashtag']['edge_hashtag_to_media']['edges'][0]['node']['shortcode']
-  except KeyError:
-    return NULL
+  except (KeyError, JSONDecodeError):
+    return 'NULL'
   latest_url = "https://instagram.com/p/"+latest_code
   return latest_url
 
@@ -53,7 +54,11 @@ def add_subscribe(insta_id, filename, tag):
           latest_url = find_latest(profile_address(insta_id), tag)
         else:
           latest_url = find_latest(tag_address(insta_id), tag)
-        newFileWriter.writerow([insta_id, latest_url])
+        if latest_url=='NULL':
+          # print("page doesn't exist or private account")
+          return -4
+        else:
+          newFileWriter.writerow([insta_id, latest_url])
         return -2
       except IndexError:
         return -4
