@@ -26,11 +26,17 @@ def find_latest(insta_url, tag):
     shared_data = script_tag.string.partition('=')[-1].strip(' ;')
     result = json.loads(shared_data)
     if tag == 0:
-      latest_code = result['entry_data']['ProfilePage'][0]['graphql']['user']['edge_owner_to_timeline_media']['edges'][0]['node']['shortcode']
+      tmp = result['entry_data']['ProfilePage'][0]['graphql']['user']['edge_owner_to_timeline_media']
     else:
-      latest_code = result['entry_data']['TagPage'][0]['graphql']['hashtag']['edge_hashtag_to_media']['edges'][0]['node']['shortcode']
+      tmp = result['entry_data']['TagPage'][0]['graphql']['hashtag']['edge_hashtag_to_media']
+
+    if (tmp['count']!=0):
+      latest_code=tmp['edges'][0]['node']['shortcode']
+    else:
+      return 'NULL'
   except (KeyError, JSONDecodeError):
     return 'NULL'
+
   latest_url = "https://instagram.com/p/"+latest_code
   return latest_url
 
@@ -42,8 +48,8 @@ def duplicate_check(insta_id, filename):
               if(row[0]==insta_id):
                 return idx
           return -1
-      except csv.Error as e:
-          sys.exit('file {}, line {}: {}'.format(filename, reader.line_num, e))
+      except csv.Error:
+          print('CSV File Error!')
 
 def add_subscribe(insta_id, filename, tag):
   with open(filename, 'a', encoding='utf-8') as newFile:
@@ -89,8 +95,8 @@ def print_subscribe_list(filename):
           for row in reader:
               ans.append(row[0])
           return ans
-      except csv.Error as e:
-          sys.exit('file {}, line {}: {}'.format(filename, reader.line_num, e))
+      except csv.Error:
+          print('CSV File Error!')
 
 def initiate_list(filename):
   """remove csv file"""

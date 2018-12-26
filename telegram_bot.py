@@ -135,7 +135,7 @@ def show_latest_user(bot, update, args):
     try:
         results = url_request.find_latest(url_request.profile_address(args[0]), 0)
         if (results == 'NULL'):
-          update.message.reply_text("Page doesn't exist or private account")
+          update.message.reply_text("Error: Page doesn't exist/private account/No post")
         else:
           update.message.reply_text(results)
 
@@ -159,20 +159,20 @@ def error(bot, update, error):
     """Log Errors caused by Updates."""
     logger.warning('Update "%s" caused error "%s"', update, error)
 
-@restricted
 def callback_feedupdater(bot, job):
     # USER UPDATE
-    with open(filename, 'rt', encoding='utf-8') as infile, open('outfile.csv', 'a', encoding='utf-8') as outfile:
-        reader = csv.reader(infile)
-        writer = csv.writer(outfile)
-        try:
+    try:
+        with open(filename, 'rt', encoding='utf-8') as infile, open('outfile.csv', 'a', encoding='utf-8') as outfile:
+            reader = csv.reader(infile)
+            writer = csv.writer(outfile)
+
             for row in reader:
                 profile = url_request.profile_address(row[0])
                 # print(profile)
                 url_temp = url_request.find_latest(profile, 0)
                 if(row[1]!=url_temp):
                     row[1] = url_temp
-                    bot.send_message(chat_id=job.context, text='Update from'+row[0]+':\n'+row[1])
+                    bot.send_message(chat_id=job.context, text='Update from '+row[0]+':\n'+row[1])
                 try:
                     writer.writerow(row)
                 except IndexError:
@@ -180,20 +180,19 @@ def callback_feedupdater(bot, job):
                 time.sleep(20)
             os.remove(filename)
             os.rename("outfile.csv", filename)
-        except csv.Error as e:
-            sys.exit('file {}, line {}: {}'.format(filename, reader.line_num, e))
-            bot.send_message(chat_id=job.context, text='CSV File Error!')
+    except (OSError, IOError):
+        print('CSV File Error!')
     # TAG UPDATE
-    with open(filename_2, 'rt', encoding='utf-8') as infile, open('outfile_2.csv', 'a', encoding='utf-8') as outfile:
-        reader = csv.reader(infile)
-        writer = csv.writer(outfile)
-        try:
+    try:
+        with open(filename_2, 'rt', encoding='utf-8') as infile, open('outfile_2.csv', 'a', encoding='utf-8') as outfile:
+            reader = csv.reader(infile)
+            writer = csv.writer(outfile)
             for row in reader:
                 profile = url_request.tag_address(row[0])
                 url_temp = url_request.find_latest(profile, 1)
                 if(row[1]!=url_temp):
                     row[1] = url_temp
-                    bot.send_message(chat_id=job.context, text='Update from'+row[0]+':\n'+row[1])
+                    bot.send_message(chat_id=job.context, text='Update from '+row[0]+':\n'+row[1])
                 try:
                     writer.writerow(row)
                 except IndexError:
@@ -201,9 +200,8 @@ def callback_feedupdater(bot, job):
                 time.sleep(20)
             os.remove(filename_2)
             os.rename("outfile_2.csv", filename_2)
-        except csv.Error as e:
-            sys.exit('file {}, line {}: {}'.format(filename_2, reader.line_num, e))
-            bot.send_message(chat_id=job.context, text='CSV File Error!')
+    except (OSError, IOError):
+        print('CSV File Error!')
 
 @restricted
 def callback_timer(bot, update, job_queue):
