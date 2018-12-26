@@ -1,5 +1,4 @@
-# PapagyeInsta-Bot
-Instagram Following Telegram Bot
+# PPGI: Your own Instagram Timeline
 
 You can follow instagram user/tag using Telegram!
 ****
