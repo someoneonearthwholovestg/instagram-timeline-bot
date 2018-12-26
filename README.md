@@ -1,4 +1,4 @@
-# PPGI: Your own Instagram Timeline
+# PPGI: Make your own Instagram Timeline
 
 You can follow instagram user/tag using Telegram!
 ****
