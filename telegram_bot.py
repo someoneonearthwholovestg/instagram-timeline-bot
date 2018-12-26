@@ -14,6 +14,7 @@ from functools import wraps
 filename = 'subscribe_user.csv'
 filename_2 = 'subscribe_tag.csv'
 job_queue_flag = 0
+check_interval = 1800
 
 dotenv_path = os.path.join(os.path.dirname(__file__), '.envs')
 load_dotenv(dotenv_path)
@@ -46,7 +47,7 @@ def start(bot, update):
     update.message.reply_text('Hi!')
 
 def help(bot, update):
-    update.message.reply_text('What you can order: \n /r(restart), /add_user, /remove_user, /add_tag, /remove_tag, /show_latest_user, /show_latest_tag, /list, /on, /off, /initiate')
+    update.message.reply_text('What you can order: \n /r(restart), /config_check_interval, /add_user, /remove_user, /add_tag, /remove_tag, /show_latest_user, /show_latest_tag, /list, /on, /off, /initiate')
 
 @restricted
 def subscription_list(bot, update):
@@ -211,7 +212,7 @@ def callback_timer(bot, update, job_queue):
     elif(job_queue_flag==0):
         bot.send_message(chat_id=update.message.chat_id,
                          text='Notification ON!')
-        job_queue.run_repeating(callback_feedupdater, interval=1800, context=update.message.chat_id)
+        job_queue.run_repeating(callback_feedupdater, interval=check_interval, context=update.message.chat_id)
     else:
         bot.send_message(chat_id=update.message.chat_id, text='FLAG ERROR')
 
@@ -219,6 +220,11 @@ def callback_timer(bot, update, job_queue):
 def notify_off(bot, update, job_queue):
     bot.send_message(chat_id=update.message.chat_id, text='Notification OFF!')
     job_queue_flag = 1
+
+@restricted
+def change_interval(bot, update, args):
+    check_interval=args[0]
+    bot.send_message(chat_id=update.message.chat_id, text='Interval changed to: '+args[0]+'s')
 
 def main():
     """Start the bot."""
@@ -235,6 +241,7 @@ def main():
     dp.add_handler(CommandHandler("help", help))
     dp.add_handler(CommandHandler("initiate", initiate))
     dp.add_handler(CommandHandler("list", subscription_list))
+    dp.add_handler(CommandHandler("config_check_interval", change_interval, pass_args=True))
     dp.add_handler(CommandHandler("add_user", add_subscription_user, pass_args=True))
     dp.add_handler(CommandHandler("remove_user", unsubscribe_user, pass_args=True))
     dp.add_handler(CommandHandler("add_tag", add_subscription_tag, pass_args=True))
