@@ -180,7 +180,7 @@ def callback_feedupdater(bot, job):
             os.remove(filename)
             os.rename("outfile.csv", filename)
     except (OSError, IOError):
-        print('CSV File Error!')
+        print('CSV File Error! (update_user)')
     # TAG UPDATE
     try:
         with open(filename_2, 'rt', encoding='utf-8') as infile, open('outfile_2.csv', 'a', encoding='utf-8') as outfile:
@@ -200,7 +200,7 @@ def callback_feedupdater(bot, job):
             os.remove(filename_2)
             os.rename("outfile_2.csv", filename_2)
     except (OSError, IOError):
-        print('CSV File Error!')
+        print('CSV File Error! (update_tag)')
 
 @restricted
 def callback_timer(bot, update, job_queue):

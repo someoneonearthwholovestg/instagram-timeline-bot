@@ -54,8 +54,9 @@ def duplicate_check(insta_id, filename):
           print('CSV File Error (dup_check)!')
 
 def add_subscribe(insta_id, filename, tag):
-  with open(filename, 'a', encoding='utf-8') as newFile:
-    if(duplicate_check(insta_id, filename)==-1):
+  dup=duplicate_check(insta_id, filename)
+  if(dup==-1):
+    with open(filename, 'a', encoding='utf-8') as newFile:
       newFileWriter = csv.writer(newFile)
       try:
         if tag==0:
@@ -71,9 +72,9 @@ def add_subscribe(insta_id, filename, tag):
       except IndexError:
         return -4
         # print("page doesn't exist or private account")
-    else:
-      # print("duplicated subscription request")
-      return -3
+  else:
+    # print("duplicated subscription request")
+    return -3
 
 def unsubscribe(insta_id, filename):
   row_num = duplicate_check(insta_id, filename)
