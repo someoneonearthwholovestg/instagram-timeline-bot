@@ -41,7 +41,7 @@ def find_latest(insta_url, tag):
   return latest_url
 
 def duplicate_check(insta_id, filename):
-  if (os.path.isfile(filename)!=0)
+  if (os.path.isfile(filename)!=0):
     return -1
   with open(filename, newline='', encoding='utf-8') as f:
       reader = csv.reader(f)
