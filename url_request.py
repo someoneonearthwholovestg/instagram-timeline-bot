@@ -49,7 +49,7 @@ def duplicate_check(insta_id, filename):
                 return idx
           return -1
       except csv.Error:
-          print('CSV File Error!')
+          print('CSV File Error (dup_check)!')
 
 def add_subscribe(insta_id, filename, tag):
   with open(filename, 'a', encoding='utf-8') as newFile:
