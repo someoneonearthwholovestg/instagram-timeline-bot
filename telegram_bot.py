@@ -161,29 +161,27 @@ def error(bot, update, error):
 def callback_feedupdater(bot, job):
     # USER UPDATE
     try:
-        with open(filename, 'rt', encoding='utf-8') as infile, open('outfile.csv', 'a', encoding='utf-8') as outfile:
+        with open(filename, 'rt', encoding='utf-8') as infile, open('outfile.csv', 'w', encoding='utf-8', newline='') as outfile:
             reader = csv.reader(infile)
             writer = csv.writer(outfile)
-
             for row in reader:
                 profile = url_request.profile_address(row[0])
-                # print(profile)
                 url_temp = url_request.find_latest(profile, 0)
                 if(row[1]!=url_temp):
                     row[1] = url_temp
-                    bot.send_message(chat_id=job.context, text='Update from '+row[0]+':\n'+row[1])
-                try:
+                    if (row[1] != 'NULL'):
+                        bot.send_message(chat_id=job.context, text='Update from '+row[0]+':\n'+row[1])
+                    else:
+                        bot.send_message(chat_id=job.context, text=row[0]+': changed to private account or not existing')
                     writer.writerow(row)
-                except IndexError:
-                    bot.send_message(chat_id=job.context, text=row[0]+'changed to private account or not existing')
                 time.sleep(20)
-            os.remove(filename)
-            os.rename("outfile.csv", filename)
+        os.remove(filename)
+        os.rename("outfile.csv", filename)
     except (OSError, IOError):
         print('CSV File Error! (update_user)')
     # TAG UPDATE
     try:
-        with open(filename_2, 'rt', encoding='utf-8') as infile, open('outfile_2.csv', 'a', encoding='utf-8') as outfile:
+        with open(filename_2, 'rt', encoding='utf-8') as infile, open('outfile_2.csv', 'w', encoding='utf-8', newline='') as outfile:
             reader = csv.reader(infile)
             writer = csv.writer(outfile)
             for row in reader:
@@ -191,14 +189,14 @@ def callback_feedupdater(bot, job):
                 url_temp = url_request.find_latest(profile, 1)
                 if(row[1]!=url_temp):
                     row[1] = url_temp
-                    bot.send_message(chat_id=job.context, text='Update from '+row[0]+':\n'+row[1])
-                try:
+                    if (row[1] != 'NULL'):
+                        bot.send_message(chat_id=job.context, text='Update from '+row[0]+':\n'+row[1])
+                    else:
+                        bot.send_message(chat_id=job.context, text=row[0]+': does not exist')
                     writer.writerow(row)
-                except IndexError:
-                    bot.send_message(chat_id=job.context, text=row[0]+'does not exist')
                 time.sleep(20)
-            os.remove(filename_2)
-            os.rename("outfile_2.csv", filename_2)
+        os.remove(filename_2)
+        os.rename("outfile_2.csv", filename_2)
     except (OSError, IOError):
         print('CSV File Error! (update_tag)')
 
