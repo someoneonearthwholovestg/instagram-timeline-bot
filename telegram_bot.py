@@ -173,7 +173,7 @@ def callback_feedupdater(bot, job):
                         bot.send_message(chat_id=job.context, text='Update from '+row[0]+':\n'+row[1])
                     else:
                         bot.send_message(chat_id=job.context, text=row[0]+': changed to private account or not existing')
-                    writer.writerow(row)
+                writer.writerow(row)
                 time.sleep(20)
         os.remove(filename)
         os.rename("outfile.csv", filename)
@@ -193,7 +193,7 @@ def callback_feedupdater(bot, job):
                         bot.send_message(chat_id=job.context, text='Update from '+row[0]+':\n'+row[1])
                     else:
                         bot.send_message(chat_id=job.context, text=row[0]+': does not exist')
-                    writer.writerow(row)
+                writer.writerow(row)
                 time.sleep(20)
         os.remove(filename_2)
         os.rename("outfile_2.csv", filename_2)
