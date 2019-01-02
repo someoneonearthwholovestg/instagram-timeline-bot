@@ -55,9 +55,9 @@ def subscription_list(bot, update):
         update.message.reply_text('Add subscribe list first')
     else:
         if(os.path.exists(filename)!=0):
-            update.message.reply_text('User:\n'+"\n".join(url_request.print_subscribe_list(filename)))
+            update.message.reply_text('User:\n'+"\n".join(url_request.print_subscribe_list(filename)), quote=False)
         if(os.path.exists(filename_2)!=0):
-            update.message.reply_text('Tag:\n'+"\n".join(url_request.print_subscribe_list(filename_2)))
+            update.message.reply_text('Tag:\n'+"\n".join(url_request.print_subscribe_list(filename_2)), quote=False)
 
 @restricted
 def reload_posts(bot, update):
@@ -67,9 +67,9 @@ def reload_posts(bot, update):
             reader = csv.reader(f)
             for row in reader:
                 if (row[1] != 'NULL'):
-                    bot.send_message(chat_id=job.context, text='Latest post from '+row[0]+':\n'+row[1])
+                    update.message.reply_text('Latest post from '+row[0]+':\n'+row[1], quote=False)
                 else:
-                    bot.send_message(chat_id=job.context, text=row[0]+': changed to private account or not existing')
+                    update.message.reply_text(row[0]+': changed to private account or not existing', quote=False)
     except (OSError, IOError):
         print('CSV File Error! (reload_post)')
 
