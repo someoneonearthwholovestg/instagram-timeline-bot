@@ -45,6 +45,7 @@ You can delete/add admin -> both ``.envs`` and ``telegram_bot.py``.
 *  `/show_latest_tag [TAG]` : Show latest post from **`TAG`**
 *  `/initiate` : Flush all subscription list
 *  `/list` : Show subscription list
+*  `/reload_posts` : Show latest posts from subscribed user
 *  `/on` : Turn push notification **ON**
 *  `/off` : Turn push notification **OFF**
 *  `/help` : Show help

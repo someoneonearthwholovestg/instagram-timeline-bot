@@ -46,7 +46,7 @@ def start(bot, update):
     update.message.reply_text('Hi!')
 
 def help(bot, update):
-    update.message.reply_text('What you can order: \n /r(restart), /add_user, /remove_user, /add_tag, /remove_tag, /show_latest_user, /show_latest_tag, /list, /on, /off, /initiate')
+    update.message.reply_text('What you can order: \n /r(restart), /add_user, /remove_user, /add_tag, /remove_tag, /show_latest_user, /show_latest_tag, /list, /on, /off, /initiate, /reload_posts')
 
 @restricted
 def subscription_list(bot, update):
@@ -58,6 +58,20 @@ def subscription_list(bot, update):
             update.message.reply_text('User:\n'+"\n".join(url_request.print_subscribe_list(filename)))
         if(os.path.exists(filename_2)!=0):
             update.message.reply_text('Tag:\n'+"\n".join(url_request.print_subscribe_list(filename_2)))
+
+@restricted
+def reload_posts(bot, update):
+    """Reload latest post in subscription"""
+    try:
+        with open(filename, 'rt', encoding='utf-8') as f:
+            reader = csv.reader(f)
+            for row in reader:
+                if (row[1] != 'NULL'):
+                    bot.send_message(chat_id=job.context, text='Latest post from '+row[0]+':\n'+row[1])
+                else:
+                    bot.send_message(chat_id=job.context, text=row[0]+': changed to private account or not existing')
+    except (OSError, IOError):
+        print('CSV File Error! (reload_post)')
 
 @restricted
 def initiate(bot, update):
@@ -231,6 +245,7 @@ def main():
     dp.add_handler(CommandHandler("help", help))
     dp.add_handler(CommandHandler("initiate", initiate))
     dp.add_handler(CommandHandler("list", subscription_list))
+    dp.add_handler(CommandHandler("reload_posts", reload_posts))
     dp.add_handler(CommandHandler("add_user", add_subscription_user, pass_args=True))
     dp.add_handler(CommandHandler("remove_user", unsubscribe_user, pass_args=True))
     dp.add_handler(CommandHandler("add_tag", add_subscription_tag, pass_args=True))
