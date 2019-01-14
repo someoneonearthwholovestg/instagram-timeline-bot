@@ -7,6 +7,7 @@ import json
 import re
 import sys
 from json import JSONDecodeError
+import portalocker
 
 def profile_address(insta_id):
   """returns instagram profile address"""
@@ -58,6 +59,7 @@ def add_subscribe(insta_id, filename, tag):
   dup=duplicate_check(insta_id, filename)
   if(dup==-1):
     with open(filename, 'a', encoding='utf-8') as newFile:
+      portalocker.lock(infile, portalocker.LOCK_EX)
       newFileWriter = csv.writer(newFile)
       try:
         if tag==0:
@@ -85,15 +87,15 @@ def unsubscribe(insta_id, filename):
     return -3
   else:
     with open(filename, 'rt', encoding='utf-8') as infile, open('outfile.csv', 'wt', encoding='utf-8') as outfile:
+      portalocker.lock(infile, portalocker.LOCK_EX)
       outfile.writelines(row for row_num, row in enumerate(infile, 0)
                           if row_num not in ROWS_TO_DELETE)
-    os.remove(filename)
-    os.rename("outfile.csv", filename)
+    os.replace("outfile.csv", filename)
     return -2
 
 def print_subscribe_list(filename):
   ans = []
-  with open(filename, newline='', encoding='utf-8') as f:
+  with open(filename, 'rt', newline='', encoding='utf-8') as f:
       reader = csv.reader(f)
       try:
           for row in reader:
