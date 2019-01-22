@@ -59,7 +59,7 @@ def add_subscribe(insta_id, filename, tag):
   dup=duplicate_check(insta_id, filename)
   if(dup==-1):
     with open(filename, 'a', encoding='utf-8') as newFile:
-      portalocker.lock(newfile, portalocker.LOCK_EX)
+      portalocker.lock(newFile, portalocker.LOCK_EX)
       newFileWriter = csv.writer(newFile)
       try:
         if tag==0:
